@@ -1,9 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Image, ScrollView, Text, View } from "react-native";
 
 interface Product {
-  title: string
+  title: string,
+  images: string[],
+  description: string
 }
 
 const Home: React.FC = () => {
@@ -23,13 +25,21 @@ const Home: React.FC = () => {
     getData()
   }, [])
   return (
-    <View>
-      {data.map((item, index) => (
-        <View key={index}>
-          <Text>{item.title}</Text>
-        </View>
-      ))}
-    </View>
+    <ScrollView>
+      <View className="flex justify-center p-3 mt-2 space-y-5">
+        {data.map((item, index) => (
+          <View key={index} className="max-w-sm rounded overflow-hidden shadow-lg border">
+            <View className="px-6 py-4">
+            <Image source={{uri: item.images[0]}} className="w-full h-[200px]" />
+              <Text className="font-bold text-xl mb-4 mt-5">{item.title}</Text>
+              <Text className="text-gray-700 text-base">
+                {item.description}
+              </Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    </ScrollView>
   )
 }
 
