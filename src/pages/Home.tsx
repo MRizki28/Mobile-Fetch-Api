@@ -28,9 +28,9 @@ const Home: React.FC = () => {
     <ScrollView>
       <View className="flex justify-center p-3 mt-2 space-y-5">
         {data.map((item, index) => (
-          <View key={index} className="max-w-sm rounded overflow-hidden shadow-lg border">
+          <View key={index} className="max-w-sm overflow-hidden shadow-lg border rounded-lg">
             <View className="px-6 py-4">
-            <Image source={{uri: item.images[0]}} className="w-full h-[200px]" />
+            <Image source={{uri: item.images[0]}} className="w-full h-[200px] rounded-2xl" />
               <Text className="font-bold text-xl mb-4 mt-5">{item.title}</Text>
               <Text className="text-gray-700 text-base">
                 {item.description}
