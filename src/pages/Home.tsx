@@ -1,6 +1,6 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Image, ScrollView, Text, View } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { Image, RefreshControl, ScrollView, Text, View } from "react-native";
 
 interface Product {
   title: string,
@@ -11,6 +11,8 @@ interface Product {
 const Home: React.FC = () => {
 
   const [data, setData] = useState<Product[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
+
   const getData = async () => {
     try {
       const response = await axios.get('https://dummyjson.com/products')
@@ -24,13 +26,23 @@ const Home: React.FC = () => {
   useEffect(() => {
     getData()
   }, [])
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getData();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
+
+
   return (
-    <ScrollView>
+    <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
       <View className="flex justify-center p-3 mt-2 space-y-5">
         {data.map((item, index) => (
           <View key={index} className="max-w-sm overflow-hidden shadow-lg border rounded-lg">
             <View className="px-6 py-4">
-            <Image source={{uri: item.images[0]}} className="w-full h-[200px] rounded-2xl" />
+              <Image source={{ uri: item.images[0] }} className="w-full h-[200px] rounded-2xl" />
               <Text className="font-bold text-xl mb-4 mt-5">{item.title}</Text>
               <Text className="text-gray-700 text-base">
                 {item.description}
